@@ -5,7 +5,7 @@ from typing import Any
 
 from app.store import store
 
-MODULE = "env"
+MODULE = "envmonitor"
 REQUIRED_FIELDS = ["记录编号", "监测区域", "温度值"]
 STATUS_ORDER = ["在控", "偏离预警", "已纠正", "已归档"]
 ACTION_RULES = {"偏离预警": "偏离预警", "纠正记录": "在控", "归档": "已归档"}

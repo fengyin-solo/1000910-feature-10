@@ -6,9 +6,9 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas import ActionResult, EntryPayload, PageResult
-from app.services.env import EnvService
+from app.services.envmonitor import EnvService
 
-router = APIRouter(prefix="/api/env", tags=["环境监控"])
+router = APIRouter(prefix="/api/envmonitor", tags=["环境监控"])
 
 service = EnvService()
 
@@ -62,4 +62,4 @@ def run_action(entry_id: int, payload: EntryPayload) -> ActionResult:
 def export_entries() -> dict[str, Any]:
     """导出环境监控清单：返回当前过滤条件下的全量数据。"""
     items, total = service.list_entries(page=1, size=10000)
-    return {"module": "env", "total": total, "items": items}
+    return {"module": "envmonitor", "total": total, "items": items}

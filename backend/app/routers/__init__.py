@@ -16,7 +16,7 @@ from app.routers import result as router_result
 from app.routers import report as router_report
 from app.routers import boundary as router_boundary
 from app.routers import abnormal as router_abnormal
-from app.routers import env as router_env
+from app.routers import envmonitor as router_envmonitor
 from app.routers import blind as router_blind
 from app.routers import ability as router_ability
 from app.routers import intermediate as router_intermediate
@@ -27,4 +27,4 @@ from app.routers import reagent2 as router_reagent2
 from app.routers import waste as router_waste
 from app.routers import opinion as router_opinion
 
-ROUTERS = [router_sample, router_contract, router_task, router_method, router_instrument, router_standard, router_result, router_report, router_boundary, router_abnormal, router_env, router_blind, router_ability, router_intermediate, router_audit, router_certification, router_quality, router_reagent2, router_waste, router_opinion]
+ROUTERS = [router_sample, router_contract, router_task, router_method, router_instrument, router_standard, router_result, router_report, router_boundary, router_abnormal, router_envmonitor, router_blind, router_ability, router_intermediate, router_audit, router_certification, router_quality, router_reagent2, router_waste, router_opinion]

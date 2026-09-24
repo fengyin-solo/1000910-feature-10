@@ -11,7 +11,7 @@ const Result = () => import('@/views/result/index.vue')
 const Report = () => import('@/views/report/index.vue')
 const Boundary = () => import('@/views/boundary/index.vue')
 const Abnormal = () => import('@/views/abnormal/index.vue')
-const Env = () => import('@/views/env/index.vue')
+const Envmonitor = () => import('@/views/envmonitor/index.vue')
 const Blind = () => import('@/views/blind/index.vue')
 const Ability = () => import('@/views/ability/index.vue')
 const Intermediate = () => import('@/views/intermediate/index.vue')
@@ -36,7 +36,7 @@ const router = createRouter({
     { path: '/report', name: 'report', component: Report },
     { path: '/boundary', name: 'boundary', component: Boundary },
     { path: '/abnormal', name: 'abnormal', component: Abnormal },
-    { path: '/env', name: 'env', component: Env },
+    { path: '/envmonitor', name: 'envmonitor', component: Envmonitor },
     { path: '/blind', name: 'blind', component: Blind },
     { path: '/ability', name: 'ability', component: Ability },
     { path: '/intermediate', name: 'intermediate', component: Intermediate },

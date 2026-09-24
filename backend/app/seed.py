@@ -364,7 +364,7 @@ SEED_ROWS: dict[str, list[dict[str, Any]]] = {
   '纠正措施': '不符合项样例3',
   '验证人员': '不符合项样例3',
   '处置状态': '不符合项样例3'}],
-    "env": [{'id': 1,
+    "envmonitor": [{'id': 1,
   'status': '在控',
   'pending': True,
   'abnormal': False,
