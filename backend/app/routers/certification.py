@@ -30,6 +30,46 @@ def list_entries(
     return PageResult(items=items, total=total, page=page, size=size)
 
 
+@router.get("/coverage")
+def coverage_view(
+    cert_type: str | None = Query(default=None, description="按认定类型过滤，切换后排列顺序跟着变"),
+    keyword: str | None = Query(default=None, description="按认定编号检索"),
+    status: str | None = Query(default=None, description="有效、临期、已过期、已注销"),
+) -> dict[str, Any]:
+    """资质覆盖视图：与台账同一口径，临期与已过期的排在前面，并给出仍暂无覆盖的项目。"""
+    items, total = service.list_coverage(keyword=keyword, status=status, cert_type=cert_type)
+    return {
+        "items": items,
+        "total": total,
+        "types": service.cert_types(),
+        "uncovered_projects": service.uncovered_projects(),
+    }
+
+
+@router.get("/coverage/{entry_id}")
+def coverage_detail(entry_id: int) -> dict[str, Any]:
+    """单个认定范围的检测项目清单；没覆盖到的项目以 covered=false 返回，由页面标注暂无覆盖。"""
+    detail = service.coverage_detail(entry_id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail=f"资质认定 {entry_id} 不存在或已归档")
+    return detail
+
+
+@router.get("/export")
+def export_entries(
+    view: str = Query(default="ledger", description="ledger 按台账登记顺序，coverage 按覆盖视图顺序"),
+    cert_type: str | None = Query(default=None, description="按认定类型过滤"),
+    keyword: str | None = Query(default=None, description="按认定编号检索"),
+    status: str | None = Query(default=None, description="有效、临期、已过期、已注销"),
+) -> dict[str, Any]:
+    """导出资质清单：按当前视图的排列顺序给出，覆盖视图带认定类型筛选。"""
+    if view == "coverage":
+        items, total = service.list_coverage(keyword=keyword, status=status, cert_type=cert_type)
+        return {"module": "certification", "view": "coverage", "total": total, "items": items}
+    items, total = service.list_entries(keyword=keyword, status=status, page=1, size=10000)
+    return {"module": "certification", "view": "ledger", "total": total, "items": items}
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条资质认定明细；不存在时给出可读的错误说明。"""
@@ -56,10 +96,3 @@ def run_action(entry_id: int, payload: EntryPayload) -> ActionResult:
     if entry is None:
         return ActionResult(ok=False, message=message)
     return ActionResult(ok=True, message=message, entry=entry)
-
-
-@router.get("/export")
-def export_entries() -> dict[str, Any]:
-    """导出认证认可清单：返回当前过滤条件下的全量数据。"""
-    items, total = service.list_entries(page=1, size=10000)
-    return {"module": "certification", "total": total, "items": items}
